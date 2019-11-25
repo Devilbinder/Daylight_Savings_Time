@@ -27,7 +27,7 @@ bool is_dst_active(time_holder_t *dst_start,
 
         /**Test if the current time is after dst should end*/
         if(dst_end->month <= time_now->month){
-           // printf("South DST Disable MON 3\n\r");
+          // printf("South DST Disable MON 3\n\r");
             enable_dst = false;
         }
         /**Test if the current time is after dst should should
@@ -48,23 +48,17 @@ bool is_dst_active(time_holder_t *dst_start,
                        /**Test if the current hour is greater or equil to when DST should start
                         * Allow the code to fall thought if the hour is greater
                         */
-                        if(dst_start->hour <= time_now->hour){
-                           // printf("DST Start hour %d\n\r",time_now->hour);
-                           /**Test if the current min is greater or equil to when DST should start
-                            * Allow the code to fall thought if the min is greater
-                            */
-                            if(dst_start->min <= time_now->min){
-                                //printf("DST Start %d-%d  %02d:%02d\n\r",time_now->day,time_now->month,time_now->hour,time_now->min);
-                                enable_dst =  true;
-                            }
+                        if(start <= now){
+                            enable_dst =  true;
                         }
+
                    }else{
                         enable_dst =  true;
                    }
                 }
             }else{
                 /**DST is active if if(dst_start->month <= time_now->month) is true*/
-                printf("South DST Enable MON 1\n\r");
+               // printf("South DST Enable MON 1\n\r");
                 enable_dst =  true;
             }
         }
@@ -74,67 +68,79 @@ bool is_dst_active(time_holder_t *dst_start,
         if(dst_end->month >= time_now->month){
            // printf("South DST Enable MON 2\n\r");
            /**Test if the current month is when dst should end*/
-            if(dst_end->month == dst_end->month){
+            if(dst_end->month == time_now->month){
                //printf("DST End MON\n\r");
                /**Test if the current day is before dst should end*/
-                if(dst_end->day >= dst_end->day ){
-                   // printf("DST End Day\n\r");
-                   /**Test if the current hour is before dst should end*/
-                    //if(dst_start->hour >= time_now->hour){
-                       // printf("DST End hour %d\n\r",time_now->hour);
-                       /**Test if the current hour is not after dst should end*/
-                       ///if(dst_start->hour != time_now->hour){
-                            //if(dst_start->min <= time_now->min){
-                                //printf("DST End %d-%d  %02d:%02d\n\r",time_now->day,time_now->month,time_now->hour,time_now->min);
-                          //      enable_dst =  true;
-                        //    }
-                      //  }
-                    //}
-                    if(start >= now){
-                        enable_dst =  true;
-                    }
-                }
-            }else{
-                enable_dst =  false;
-            }
-
-        }
-
-    }else{
-       // printf("In the North\n\r");
-        if((dst_start->month <= time_now->month) && (time_now->month <= dst_end->month)){
-            //printf("North DST Enable MON\n\r");
-
-            if(dst_start->month == time_now->month){
-               //printf("DST Start MON\n\r");
-                if(dst_start->day <= time_now->day ){
-                   // printf("DST Start Day\n\r");
-                    if(dst_start->hour <= time_now->hour){
-                       // printf("DST Start hour %d\n\r",time_now->hour);
-
-                        if(dst_start->min <= time_now->min){
-                            //printf("DST Start %d-%d  %02d:%02d\n\r",time_now->day,time_now->month,time_now->hour,time_now->min);
+                if(dst_end->day >= time_now->day ){
+                    if(dst_start->day == time_now->day ){
+                        //printf("DST End Day\n\r");
+                       /**Test if the current hour is before dst should end*/
+                        if(start > now){
                             enable_dst =  true;
                         }
-
+                    }else{
+                        enable_dst =  true;
                     }
                 }
             }else{
                 enable_dst =  true;
             }
-        }else{
-            if(dst_end->month == dst_end->month){
-               //printf("DST Start MON\n\r");
-                if(dst_end->day == dst_end->day ){
-                   // printf("DST End Day\n\r");
-                    if(dst_start->hour >= time_now->hour){
-                       // printf("DST End hour %d\n\r",time_now->hour);
-                        if(dst_start->min >= time_now->min){
-                            //printf("DST End %d-%d  %02d:%02d\n\r",time_now->day,time_now->month,time_now->hour,time_now->min);
+
+        }
+
+    }else{
+         //printf("In the North\n\r");
+        if((dst_start->month <= time_now->month) && (time_now->month < dst_end->month)){
+            //printf("North DST Enable MON\n\r");
+
+            if(dst_start->month == time_now->month){
+
+            //printf("DST Start MON\n\r");
+               /**Test if the current day is greater or equil to when DST should start
+               * Allow the code to fall thought if the day is greater
+               */
+                if(dst_start->day <= time_now->day ){
+                   // printf("DST Start Day\n\r");
+                   if(dst_start->day == time_now->day ){
+                       /**Test if the current hour is greater or equil to when DST should start
+                        * Allow the code to fall thought if the hour is greater
+                        */
+                        if(start <= now){
                             enable_dst =  true;
                         }
-                    }
+
+                   }else{
+                        enable_dst =  true;
+                   }
                 }
+            }else{
+                enable_dst =  true;
+            }
+        }else{
+            /**Test if the current time is in the start of the year before dst should end */
+            if(dst_end->month == time_now->month){
+               // printf("South DST Enable MON 2\n\r");
+               /**Test if the current month is when dst should end*/
+                if(dst_end->month == time_now->month){
+                   //printf("DST End MON\n\r");
+                   /**Test if the current day is before dst should end*/
+                    if(dst_end->day >= time_now->day){
+                        //printf("DST End Day\n\r");
+                        if(dst_end->day == time_now->day){
+                            /**Test if the current hour is before dst should end*/
+                            if(start > now){
+                                enable_dst =  true;
+                            }
+
+                        }else{
+                            enable_dst =  true;
+                        }
+
+                    }
+                }else{
+                    enable_dst =  false;
+                }
+
             }
         }
     }
