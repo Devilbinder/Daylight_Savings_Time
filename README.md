@@ -20,8 +20,8 @@ the timezone on a Windows platorms without changing the system timezone please l
 a issue and I'll add it.
 
 Tested on:
--ESP8266
--ESP32
--Raspbian
+* ESP8266
+* ESP32
+* Raspbian
 
 
