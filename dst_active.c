@@ -1,3 +1,24 @@
+/*MIT License
+
+Copyright (c) 2019 Devilbinder
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.*/
 
 
 #include "dst_active.h"
@@ -72,17 +93,20 @@ bool is_dst_active(time_holder_t *dst_start,
                //printf("DST End MON\n\r");
                /**Test if the current day is before dst should end*/
                 if(dst_end->day >= time_now->day ){
+                    /**Test if the current day is the day dst should end*/
                     if(dst_start->day == time_now->day ){
                         //printf("DST End Day\n\r");
-                       /**Test if the current hour is before dst should end*/
+                       /**Test if the current time in min is before dst should end*/
                         if(start > now){
                             enable_dst =  true;
                         }
                     }else{
+                        /**if the day is after dst is active, skip time test*/
                         enable_dst =  true;
                     }
                 }
             }else{
+                /**if the month is after dst is active, skip month test*/
                 enable_dst =  true;
             }
 
@@ -92,7 +116,7 @@ bool is_dst_active(time_holder_t *dst_start,
          //printf("In the North\n\r");
         if((dst_start->month <= time_now->month) && (time_now->month < dst_end->month)){
             //printf("North DST Enable MON\n\r");
-
+            /**Test if the current month is when dst should end*/
             if(dst_start->month == time_now->month){
 
             //printf("DST Start MON\n\r");
@@ -101,10 +125,9 @@ bool is_dst_active(time_holder_t *dst_start,
                */
                 if(dst_start->day <= time_now->day ){
                    // printf("DST Start Day\n\r");
+                   /**Test if the current time in min is before dst should end*/
                    if(dst_start->day == time_now->day ){
-                       /**Test if the current hour is greater or equil to when DST should start
-                        * Allow the code to fall thought if the hour is greater
-                        */
+                        /**Test if the current time in min is before dst should end*/
                         if(start <= now){
                             enable_dst =  true;
                         }
@@ -114,6 +137,7 @@ bool is_dst_active(time_holder_t *dst_start,
                    }
                 }
             }else{
+                /**if the month is after dst is active, skip month test*/
                 enable_dst =  true;
             }
         }else{
@@ -127,12 +151,13 @@ bool is_dst_active(time_holder_t *dst_start,
                     if(dst_end->day >= time_now->day){
                         //printf("DST End Day\n\r");
                         if(dst_end->day == time_now->day){
-                            /**Test if the current hour is before dst should end*/
+                            /**Test if the current time in min is before dst should end*/
                             if(start > now){
                                 enable_dst =  true;
                             }
 
                         }else{
+                            /**if the day is after dst is active, skip time test*/
                             enable_dst =  true;
                         }
 
